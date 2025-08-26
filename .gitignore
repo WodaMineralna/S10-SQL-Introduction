@@ -1,3 +1,4 @@
 node_modules
 products.json
 cart.json
+.env
