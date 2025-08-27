@@ -1,2 +1,1 @@
--- TODO add proper filler values
-INSERT INTO users (name) VALUES ('Max'), ('Igor'), ('Test');
+INSERT INTO `products` ('id', 'title', 'price', 'description', 'imageUrl') VALUES (1,'Book',12.99,'This is an awesome book!','https://media.istockphoto.com/id/1464620762/pl/wektor/książka-w-zamkniętej-twardej-oprawie.jpg?s=1024x1024&w=is&k=20&c=eE95vQBX2FFTaAVlBfBKq2iQmLIYggwFq3awPLrAr48=') (2, 'Pen', 2.99, 'An awesome pen!', 'https://media.istockphoto.com/id/1304186549/vector/automatic-spring-ballpoint-pen-in-black-case-vector-illustration.jpg?s=612x612&w=0&k=20&c=R_yPawneqKX8J-NeiKmNXuYx36tCoPSCFEHx0Bd4dEg=')

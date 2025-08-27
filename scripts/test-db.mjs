@@ -3,7 +3,7 @@ import pool from "../src/db/pool.js";
 try {
   const [[{ now }]] = await pool.query("SELECT NOW() AS now");
   const [[{ db }]] = await pool.query("SELECT DATABASE() AS db");
-  const [rows] = await pool.query("SELECT * FROM users")
+  const [rows] = await pool.query("SELECT * FROM products")
   console.log("===== DB connection OK =====");
   console.log("   Database: ", db);
   console.log("   Time now: ", now);
