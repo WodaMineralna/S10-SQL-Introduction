@@ -16,4 +16,4 @@ const pool = mysql.createPool({
   password: required("DB_PASSWORD"),
 });
 
-module.exports = { pool }
+module.exports = pool

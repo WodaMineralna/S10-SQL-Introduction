@@ -1,4 +1,4 @@
-import { pool } from "../src/db/pool.js";
+import pool from "../src/db/pool.js";
 
 try {
   const [[{ now }]] = await pool.query("SELECT NOW() AS now");
