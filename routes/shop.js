@@ -1,5 +1,3 @@
-const path = require("path");
-
 const express = require("express");
 
 const shopController = require("../controllers/shop");
@@ -12,11 +10,13 @@ router.get("/products", shopController.getProductsPage);
 
 router.get("/products/:id", shopController.getProduct);
 
-router.get("/cart", shopController.getCart);
+// ! currently commented out, will be re-added soon
 
-router.post("/cart", shopController.postCart);
+// router.get("/cart", shopController.getCart);
 
-router.post("/cart/delete/:productId", shopController.postDeleteCart)
+// router.post("/cart", shopController.postCart);
+
+// router.post("/cart/delete/:productId", shopController.postDeleteCart)
 
 router.get("/orders", shopController.getOrders);
 
