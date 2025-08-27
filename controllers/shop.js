@@ -1,8 +1,8 @@
-const Product = require("../models/product");
+const { fetchAll, findProductById } = require("../models/product");
 const Cart = require("../models/cart");
 
 exports.getProductsPage = async (req, res, next) => {
-  const products = await Product.fetchAll();
+  const products = await fetchAll();
   res.render("shop/product-list", {
     products,
     pageTitle: "All Products",
@@ -12,7 +12,7 @@ exports.getProductsPage = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
   const prodId = req.params.id;
-  const filteredProduct = await Product.findById(prodId);
+  const filteredProduct = await findProductById(prodId);
 
   res.render("shop/product-detail", {
     product: filteredProduct,
@@ -22,7 +22,7 @@ exports.getProduct = async (req, res, next) => {
 };
 
 exports.getIndex = async (req, res, next) => {
-  const products = await Product.fetchAll();
+  const products = await fetchAll("products");
   res.render("shop/index", {
     products,
     pageTitle: "Shop",
@@ -35,7 +35,7 @@ exports.getCart = async (req, res, next) => {
   const products = [];
 
   for (const item of cart) {
-    const filteredItem = await Product.findById(item.id); // ^ fetch the full cart item data
+    const filteredItem = await Product.findProductById(item.id); // ^ fetch the full cart item data
     // console.log(filteredItem); // DEBUGGING
     products.push({
       ...filteredItem,

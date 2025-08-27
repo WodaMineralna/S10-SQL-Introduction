@@ -1,72 +1,81 @@
-const path = require("path");
+const db = require("../src/db/pool");
 
-const appPath = require("../utils/path");
-const {
-  loadData,
-  deleteItem,
-  saveData,
-  findExistingProductIndex,
-} = require("../utils/file-storage");
+const { loadData } = require("../utils/db-helpers");
 
-// products.json path directory
-const p = path.join(appPath, "data", "products.json");
+async function fetchAll() {
+  const products = await loadData("products");
+  return products;
+}
 
-module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
-    this.id = Math.floor(Math.random() * 100000).toString(); // dummy pseudo-random ID
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
+async function findProductById(id) {
+  try {
+    const [rows] = await db.query(
+      "SELECT id, title, price, description, imageUrl FROM products WHERE id = ? LIMIT 1",
+      [id]
+    );
+    const item = rows[0];
+    // console.log(item); // DEBUGGING
+    return item;
+  } catch (error) {
+    throw new Error(
+      `An error occurred while fetching ID: (${id}) item data data! --- ${error}`
+    );
   }
+}
 
-  async save(id) {
-    const products = await loadData(p); // getting the current products
+async function updateProduct(productData) {
+  const { prodId, title, price, description, imageUrl } = productData;
+  // console.log(prodId, title, price, description, imageUrl); // DEBUGGING
 
-    // * if 'id' was provided when calling the save() method, it means the Products were meant to be updated
-    if (id !== undefined) {
-      const existingProductIndex = findExistingProductIndex(products, id);
+  try {
+    const [result] = await db.query(
+      "UPDATE products SET title = ?, price = ?, description = ?, imageUrl = ? WHERE id = ?",
+      [title, price, description, imageUrl, prodId]
+    );
 
-      Object.assign(products[existingProductIndex], {
-        title: this.title,
-        imageUrl: this.imageUrl,
-        description: this.description,
-        price: this.price,
-      });
-    } else {
-      products.push(this); // pushing the newly created product into the local Array, if no 'id' was provided
-    }
-
-    // ^ writing all of the products into the products.json file
-    await saveData(p, products);
+    console.log("ITEM UPDATED (id):", result.affectedRows); // DEBUGGING
+  } catch (error) {
+    throw new Error(
+      `An error occurred while updating product data! --- ${error}`
+    );
   }
+}
 
-  static async deleteProduct(id) {
-    await deleteItem(p, id);
+// ? probably gonna outsorce the function to a helper function (utils/db-helpers.js)    --    so it's reusable in addToCart functions
+async function addProduct(productData) {
+  const { title, price, description, imageUrl } = productData;
+  console.log(productData);
+
+  try {
+    const [result] = await db.query(
+      "INSERT INTO products (title, price, description, imageUrl) VALUES (?, ?, ?, ?)",
+      [title, price, description, imageUrl]
+    );
+
+    console.log("New product created! It's ID:", result.insertId); // DEBUGGING
+    return result.insertId;
+  } catch (error) {
+    throw new Error(
+      `An error occurred while adding a new product! --- ${error}`
+    );
   }
+}
 
-  // * 'static', so we can call this method directly on the Class itself - not on the single instance of the 'Product'
-  static async fetchAll() {
-    const products = await loadData(p);
-    return products;
+async function deleteProduct(id) {
+  try {
+    const [result] = await db.query("DELETE FROM products WHERE id = ?", [id]);
+    console.log(result.affectedRows); // DEBUGGING
+  } catch (error) {
+    throw new Error(
+      `An error occurred while deleting (ID: ${id}) product! --- ${error}`
+    );
   }
+}
 
-  static async findById(id) {
-    const products = await loadData(p);
-
-    const filteredProduct = products.find((product) => product.id === id);
-
-    // ^ error handler - if the item ID got corrupted / deleted / etc
-    if (!filteredProduct) {
-      return {
-        id,
-        title: "Item not found!",
-        description: "Item not found!",
-        price: 0,
-        wasDeleted: true,
-      };
-    }
-    // console.log(filteredProduct); // DEBUGGING
-    return filteredProduct;
-  }
+module.exports = {
+  fetchAll,
+  findProductById,
+  updateProduct,
+  addProduct,
+  deleteProduct,
 };
