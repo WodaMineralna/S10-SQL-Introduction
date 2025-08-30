@@ -1,17 +1,12 @@
-const path = require("path");
+// ! FILE CURRENTLY NOT FUNCTIONAL
+// its routes were commented out (in routes/shop.js)
 
-const appPath = require("../utils/path");
 const {
   loadData,
   deleteItem,
   saveData,
   findExistingProductIndex,
-} = require("../utils/file-storage");
-
-// products.json path directory
-const p = path.join(appPath, "data", "cart.json");
-
-// TODO add try-catch blocks here and in Product model
+} = require("../utils/db-helpers");
 
 module.exports = class Cart {
   static async addProduct(id) {

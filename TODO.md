@@ -10,6 +10,6 @@ Each item will be checked off as it’s implemented.
 - [ ] Migrate cart functionality from JSON file storage to SQL 
 
 ## Medium Priority
-- [ ] Remove unused `utils/path.js` file after cart DB migration  
+- [x] Remove unused `utils/path.js` file  
 
 ## Low Priority / Nice to Have
