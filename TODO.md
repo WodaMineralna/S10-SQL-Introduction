@@ -6,7 +6,7 @@ Each item will be checked off as it’s implemented.
 ---
 
 ## High Priority
-- [ ] Bubble up trycatch blocks - handle errors in controllers instead of models  
+- [x] Bubble up trycatch blocks - handle errors in routes folder, instead of models  
 - [ ] Migrate cart functionality from JSON file storage to SQL 
 
 ## Medium Priority

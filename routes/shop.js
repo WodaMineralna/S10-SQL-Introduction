@@ -4,22 +4,24 @@ const shopController = require("../controllers/shop");
 
 const router = express.Router();
 
-router.get("/", shopController.getIndex);
+const catchErrAsync = require("../utils/catchErrAsync")
 
-router.get("/products", shopController.getProductsPage);
+router.get("/", catchErrAsync(shopController.getIndex));
 
-router.get("/products/:id", shopController.getProduct);
+router.get("/products", catchErrAsync(shopController.getProductsPage));
+
+router.get("/products/:id", catchErrAsync(shopController.getProduct));
 
 // ! currently commented out, will be re-added soon
 
-// router.get("/cart", shopController.getCart);
+// router.get("/cart", catchErrAsync(shopController.getCart));
 
-// router.post("/cart", shopController.postCart);
+// router.post("/cart", catchErrAsync(shopController.postCart));
 
-// router.post("/cart/delete/:productId", shopController.postDeleteCart)
+// router.post("/cart/delete/:productId", catchErrAsync(shopController.postDeleteCart))
 
-router.get("/orders", shopController.getOrders);
+router.get("/orders", catchErrAsync(shopController.getOrders));
 
-router.get("/checkout", shopController.getCheckout);
+router.get("/checkout", catchErrAsync(shopController.getCheckout));
 
 module.exports = router;
